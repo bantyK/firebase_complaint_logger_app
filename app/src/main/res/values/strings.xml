@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">FirebaseDB</string>
+    <string name="please_sign_up_to_continue">Please sign up to continue</string>
+    <string name="signup_phone">Sign up using phone</string>
+    <string name="create_account">Create Account</string>
+    <string name="sign_up_get_started">Sign up to get started!</string>
+    <string name="hint_full_name">Full Name</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="login">Login</string>
+    <string name="already_member">
+    <![CDATA[I\'m already a member, <b><font color=#D4557F>Sign In</b>]]>
+  </string>
+    <string name="new_member">
+    <![CDATA[I\'m a new user, <b><font color=#D4557F>Sign Up</b>]]>
+  </string>
+    <string name="welcome">Welcome</string>
+    <string name="sign_in_to_continue">Sign in to continue!</string>
+    <string name="forgot_password">Forgot Password?</string>
+</resources>
