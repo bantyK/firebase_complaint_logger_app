@@ -48,6 +48,12 @@ dependencies {
     implementation "android.arch.navigation:navigation-fragment-ktx:$version_navigation"
     implementation "android.arch.navigation:navigation-ui-ktx:$version_navigation"
 
+    // lifecycle and view models
+    implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$version_lifecycle_extensions"
+    implementation "androidx.lifecycle:lifecycle-livedata:$version_lifecycle_extensions"
+    kapt "androidx.lifecycle:lifecycle-compiler:$version_lifecycle_extensions"
+
 }
 
 apply plugin: 'com.google.gms.google-services'

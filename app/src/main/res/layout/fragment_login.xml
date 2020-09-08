@@ -51,11 +51,11 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-                android:id="@+id/editText_full_name"
+                android:id="@+id/editText_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:importantForAutofill="no"
-                android:inputType="text"
+                android:inputType="textEmailAddress"
                 android:textColor="#1C202D" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,7 +93,7 @@
 
 
         <Button
-            android:id="@+id/button_signup"
+            android:id="@+id/button_signin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_16dp"

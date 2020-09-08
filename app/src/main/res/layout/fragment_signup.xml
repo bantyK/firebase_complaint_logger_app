@@ -52,11 +52,11 @@
         >
 
         <EditText
-            android:id="@+id/editText_email"
+            android:id="@+id/editText_full_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:importantForAutofill="no"
-            android:inputType="textEmailAddress"
+            android:inputType="text"
             android:textColor="#1C202D" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,11 +70,11 @@
         app:layout_constraintTop_toBottomOf="@id/text_input_name_layout">
 
         <EditText
-            android:id="@+id/editText_full_name"
+            android:id="@+id/editText_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:importantForAutofill="no"
-            android:inputType="text"
+            android:inputType="textEmailAddress"
             android:textColor="#1C202D" />
     </com.google.android.material.textfield.TextInputLayout>
 
