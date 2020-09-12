@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.banty.firebasedb.R
 import com.banty.firebasedb.utils.showToast
 import com.google.firebase.auth.FirebaseAuth
@@ -17,6 +18,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.lang.IllegalArgumentException
 import java.util.*
 
 class AddComplaintFragment : Fragment() {
@@ -54,24 +56,40 @@ class AddComplaintFragment : Fragment() {
         registerObservers()
     }
 
-    override fun onStart() {
-        super.onStart()
-        FirebaseDatabase.getInstance().reference.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-                Log.d("Tag##", "${snapshot?.child(FirebaseAuth.getInstance().uid!!).value}")
-            }
-        })
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        FirebaseDatabase.getInstance().reference.addValueEventListener(object : ValueEventListener {
+//            override fun onCancelled(error: DatabaseError) {
+//                showToast("Error: please try again")
+//            }
+//
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//
+//            }
+//        })
+//    }
 
     private fun registerObservers() {
         viewModel.invalidInput.observe(viewLifecycleOwner, androidx.lifecycle.Observer { invalid ->
             if (invalid) {
                 showToast("Please fill all the values")
                 viewModel.invalidHandled()
+            }
+        })
+
+        viewModel.dataPostError.observe(viewLifecycleOwner, androidx.lifecycle.Observer { error ->
+            if (error) {
+                showToast("Error: please try again")
+            }
+        })
+
+        viewModel.dataPosted.observe(viewLifecycleOwner, androidx.lifecycle.Observer { success ->
+            if (success) {
+                try {
+                    findNavController().navigate(AddComplaintFragmentDirections.actionAddComplaintFragmentToMainFragment())
+                } catch (e: IllegalArgumentException) {
+                    Log.e("Tag##", "Navigation not successful")
+                }
             }
         })
     }

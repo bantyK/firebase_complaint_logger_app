@@ -55,5 +55,12 @@
         android:id="@+id/addComplaintFragment"
         android:name="com.banty.firebasedb.complaints.AddComplaintFragment"
         android:label="fragment_add_complaint"
-        tools:layout="@layout/fragment_add_complaint" />
+        tools:layout="@layout/fragment_add_complaint" >
+        <action
+            android:id="@+id/action_addComplaintFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

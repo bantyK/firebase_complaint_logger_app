@@ -1,6 +1,6 @@
 package com.banty.firebasedb.complaints
 
-data class Complaint(
+class Complaint constructor(
     val firstname: String,
     val lastname: String,
     val flatno: String,
@@ -8,4 +8,8 @@ data class Complaint(
     val description: String,
     val locality: String,
     val date: String
-)
+) {
+    // required for firebase database
+    constructor() : this("", "", "", "", "", "", "")
+
+}
