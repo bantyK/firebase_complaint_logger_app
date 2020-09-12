@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/mainFragment">
 
@@ -30,6 +31,9 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mainFragment_to_addComplaintFragment"
+            app:destination="@id/addComplaintFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -47,4 +51,9 @@
             android:id="@+id/action_signInFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addComplaintFragment"
+        android:name="com.banty.firebasedb.complaints.AddComplaintFragment"
+        android:label="fragment_add_complaint"
+        tools:layout="@layout/fragment_add_complaint" />
 </navigation>
