@@ -1,10 +1,11 @@
 package com.banty.firebasedb.complaints
 
 data class Complaint(
-    val username: String,
-    val flatNo: String,
+    val firstname: String,
+    val lastname: String,
+    val flatno: String,
     val complaintType: String,
     val description: String,
-    val location: String,
+    val locality: String,
     val date: String
 )

@@ -3,6 +3,7 @@ package com.banty.firebasedb.complaints
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,11 @@ import android.widget.*
 import androidx.lifecycle.ViewModelProviders
 import com.banty.firebasedb.R
 import com.banty.firebasedb.utils.showToast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.util.*
 
 class AddComplaintFragment : Fragment() {
@@ -48,6 +54,19 @@ class AddComplaintFragment : Fragment() {
         registerObservers()
     }
 
+    override fun onStart() {
+        super.onStart()
+        FirebaseDatabase.getInstance().reference.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d("Tag##", "${snapshot?.child(FirebaseAuth.getInstance().uid!!).value}")
+            }
+        })
+    }
+
     private fun registerObservers() {
         viewModel.invalidInput.observe(viewLifecycleOwner, androidx.lifecycle.Observer { invalid ->
             if (invalid) {
@@ -73,13 +92,15 @@ class AddComplaintFragment : Fragment() {
 
     private fun submitComplaint() {
         viewModel.submitComplaint(
-            firstNameEditText.text.toString(),
-            lastNameEditText.text.toString(),
-            flatNumberEditText.text.toString(),
-            complaintEditText.text.toString(),
-            complaintTypeTextView.text.toString(),
-            localityTextView.text.toString(),
-            dateTextView.text.toString()
+            Complaint(
+                firstname = firstNameEditText.text.toString(),
+                lastname = lastNameEditText.text.toString(),
+                flatno = flatNumberEditText.text.toString(),
+                description = complaintEditText.text.toString(),
+                complaintType = complaintTypeTextView.text.toString(),
+                locality = localityTextView.text.toString(),
+                date = dateTextView.text.toString()
+            )
         )
     }
 

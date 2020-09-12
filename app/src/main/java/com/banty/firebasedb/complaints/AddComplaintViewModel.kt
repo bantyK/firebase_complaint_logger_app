@@ -4,7 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import java.lang.IllegalArgumentException
+import java.util.*
 
 class AddComplaintViewModel : ViewModel() {
 
@@ -12,38 +15,26 @@ class AddComplaintViewModel : ViewModel() {
     val invalidInput: LiveData<Boolean>
         get() = _invalidInput
 
-    fun submitComplaint(
-        firstname: String,
-        lastname: String,
-        flatno: String,
-        description: String,
-        complaintType: String,
-        locality: String,
-        date: String
-    ) {
-        if (invalidInput(firstname, lastname, flatno, description, complaintType, locality, date)) {
+    fun submitComplaint(complaint: Complaint) {
+        if (invalidInput(complaint)) {
             _invalidInput.value = true
         } else {
-            // store it in firebase
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser != null) {
+                val databaseRef = FirebaseDatabase.getInstance().reference
+                databaseRef.child(currentUser.uid).child("complaints").child(UUID.randomUUID().toString()).setValue(complaint)
+            }
         }
     }
 
-    private fun invalidInput(
-        firstname: String,
-        lastname: String,
-        flatno: String,
-        description: String,
-        complaintType: String,
-        locality: String,
-        date: String
-    ): Boolean {
-        return firstname.isNullOrEmpty()
-                || lastname.isNullOrEmpty()
-                || flatno.isNullOrEmpty()
-                || description.isNullOrEmpty()
-                || complaintType.isNullOrEmpty()
-                || locality.isNullOrEmpty()
-                || date.isNullOrEmpty()
+    private fun invalidInput(complaint: Complaint): Boolean {
+        return complaint.firstname.isNullOrEmpty()
+                || complaint.lastname.isNullOrEmpty()
+                || complaint.flatno.isNullOrEmpty()
+                || complaint.description.isNullOrEmpty()
+                || complaint.complaintType.isNullOrEmpty()
+                || complaint.locality.isNullOrEmpty()
+                || complaint.date.isNullOrEmpty()
     }
 
     fun invalidHandled() {
