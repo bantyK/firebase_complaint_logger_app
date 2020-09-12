@@ -7,26 +7,80 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.TextView
+import android.widget.*
+import androidx.lifecycle.ViewModelProviders
 import com.banty.firebasedb.R
+import com.banty.firebasedb.utils.showToast
 import java.util.*
 
 class AddComplaintFragment : Fragment() {
 
     private lateinit var dateTextView: TextView
+    private lateinit var firstNameEditText: EditText
+    private lateinit var lastNameEditText: EditText
+    private lateinit var flatNumberEditText: EditText
+    private lateinit var complaintEditText: EditText
+    private lateinit var complaintTypeTextView: AutoCompleteTextView
+    private lateinit var localityTextView: AutoCompleteTextView
+    private lateinit var submitButton: Button
+
+    private val viewModel: AddComplaintViewModel by lazy {
+        ViewModelProviders.of(
+            this,
+            AddComplaintViewModel.Factory()
+        )[AddComplaintViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_add_complaint, container, false)
+        return inflater.inflate(R.layout.fragment_add_complaint, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews(view)
         setAutocompleteAdapter(view.findViewById(R.id.complaint_type_text), R.array.complaint_types)
         setAutocompleteAdapter(view.findViewById(R.id.locality), R.array.locality)
-        dateTextView = view.findViewById(R.id.date_layout)
         dateTextView.setOnClickListener { showDatePicker() }
-        return view
+
+        registerObservers()
+    }
+
+    private fun registerObservers() {
+        viewModel.invalidInput.observe(viewLifecycleOwner, androidx.lifecycle.Observer { invalid ->
+            if (invalid) {
+                showToast("Please fill all the values")
+                viewModel.invalidHandled()
+            }
+        })
+    }
+
+
+    private fun initViews(view: View) {
+        dateTextView = view.findViewById(R.id.date_layout)
+        firstNameEditText = view.findViewById(R.id.editText_name)
+        lastNameEditText = view.findViewById(R.id.editText_lname)
+        flatNumberEditText = view.findViewById(R.id.editText_flatno)
+        complaintEditText = view.findViewById(R.id.editText_complaint)
+        complaintTypeTextView = view.findViewById(R.id.complaint_type_text)
+        localityTextView = view.findViewById(R.id.locality)
+        submitButton = view.findViewById(R.id.button_submit)
+
+        submitButton.setOnClickListener { submitComplaint() }
+    }
+
+    private fun submitComplaint() {
+        viewModel.submitComplaint(
+            firstNameEditText.text.toString(),
+            lastNameEditText.text.toString(),
+            flatNumberEditText.text.toString(),
+            complaintEditText.text.toString(),
+            complaintTypeTextView.text.toString(),
+            localityTextView.text.toString(),
+            dateTextView.text.toString()
+        )
     }
 
 
@@ -49,7 +103,7 @@ class AddComplaintFragment : Fragment() {
         context?.let {
             val datePicker = DatePickerDialog(
                 it,
-                { view, year, month, dayOfMonth -> setTimeInView(it,dayOfMonth, month, year) },
+                { view, year, month, dayOfMonth -> setTimeInView(it, dayOfMonth, month, year) },
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
@@ -64,11 +118,11 @@ class AddComplaintFragment : Fragment() {
         month: Int,
         year: Int
     ) {
-        val dayStr: String = if (dayOfMonth < 10)
-            "0$dayOfMonth" else "$dayOfMonth"
+        val dayStr: String = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
         val monthStr: String = if (month < 10) "0$month" else "$month"
 
-        dateTextView.text = context.resources.getString(R.string.date_string, dayStr, monthStr, year.toString())
+        dateTextView.text =
+            context.resources.getString(R.string.date_string, dayStr, monthStr, year.toString())
     }
 
 

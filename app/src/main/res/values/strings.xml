@@ -28,6 +28,7 @@
     <string name="date">Date</string>
     <string name="date_picker_title">Select a Date</string>
     <string name="date_string">%s/%s/%s</string>
+    <string name="submit">Submit</string>
 
     <string-array name="complaint_types">
         <item>Electricians</item>
